@@ -199,7 +199,6 @@ jobs:
   - script: gradle --stop
   - publish: tools/ooanalyzer/ghidra/OOAnalyzerPlugin/dist/
   - task: GitHubRelease@0
-    condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
     inputs:
       repositoryName: $(Build.Repository.Name)
       action: delete
@@ -207,7 +206,6 @@ jobs:
       tag: ghidra-$(ghidraVersion)
     continueOnError: true
   - task: DownloadSecureFile@1
-    condition: eq(variables['Build.SourceBranchName'], 'master')
     name: deployKey
     inputs:
       secureFile: 'deploy.key'
@@ -222,13 +220,11 @@ jobs:
       git remote add ssh-origin git@github.com:sei-eschwartz/pharos.git
       git push --delete ssh-origin ghidra-$(ghidraVersion)
       rm -f $(deployKey.secureFilePath)
-    condition: eq(variables['Build.SourceBranchName'], 'master')
     env:
       SSH_AUTH_SOCK: /tmp/ssh_agent.sock
     continueOnError: true
     displayName: Delete old git tag ghidra-$(ghidraVersion)
   - task: GitHubRelease@0
-    condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
     inputs:
       repositoryName: $(Build.Repository.Name)
       action: create
