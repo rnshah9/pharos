@@ -200,7 +200,7 @@ jobs:
   - publish: tools/ooanalyzer/ghidra/OOAnalyzerPlugin/dist/
   - task: GitHubRelease@0
     inputs:
-      gitHubConnection: cmu-sei
+      gitHubConnection: gh
       repositoryName: $(Build.Repository.Name)
       action: delete
       tagSource: manual
@@ -227,7 +227,7 @@ jobs:
     displayName: Delete old git tag ghidra-$(ghidraVersion)
   - task: GitHubRelease@0
     inputs:
-      gitHubConnection: cmu-sei
+      gitHubConnection: gh
       repositoryName: $(Build.Repository.Name)
       action: create
       target: $(Build.SourceVersion)
