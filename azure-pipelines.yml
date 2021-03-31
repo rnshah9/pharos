@@ -186,21 +186,21 @@ jobs:
     workingDirectory: tools/ooanalyzer/ghidra/OOAnalyzerPlugin
     env:
       WS: $(Pipeline.Workspace)
-  - bash: |
-      set -e
-      # Needs a head
-      Xvfb :1 &
-      DISPLAY=:1 GHIDRA_INSTALL_DIR=$(find $WS -maxdepth 1 -type d -name 'ghidra_*') gradle --build-cache test
-      kill %%
-    displayName: Run tests
-    workingDirectory: tools/ooanalyzer/ghidra/OOAnalyzerPlugin
-    env:
-      WS: $(Pipeline.Workspace)
+  # - bash: |
+  #     set -e
+  #     # Needs a head
+  #     Xvfb :1 &
+  #     DISPLAY=:1 GHIDRA_INSTALL_DIR=$(find $WS -maxdepth 1 -type d -name 'ghidra_*') gradle --build-cache test
+  #     kill %%
+  #   displayName: Run tests
+  #   workingDirectory: tools/ooanalyzer/ghidra/OOAnalyzerPlugin
+  #   env:
+  #     WS: $(Pipeline.Workspace)
   - script: gradle --stop
   - publish: tools/ooanalyzer/ghidra/OOAnalyzerPlugin/dist/
   - task: GitHubRelease@0
     inputs:
-      gitHubConnection: gh
+      gitHubConnection: gh2
       repositoryName: $(Build.Repository.Name)
       action: delete
       tagSource: manual
@@ -227,7 +227,7 @@ jobs:
     displayName: Delete old git tag ghidra-$(ghidraVersion)
   - task: GitHubRelease@0
     inputs:
-      gitHubConnection: gh
+      gitHubConnection: gh2
       repositoryName: $(Build.Repository.Name)
       action: create
       target: $(Build.SourceVersion)
