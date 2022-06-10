@@ -4,7 +4,7 @@ set -ex
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-NCPU="${NCPU:-1}"
+NCPU=4
 PREFIX="${PREFIX:-/usr/local}"
 
 # BOOST
