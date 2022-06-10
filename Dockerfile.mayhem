@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:latest as builder
 
 ARG NCPU=1
 ENV NCPU=$NCPU
@@ -23,3 +23,12 @@ ADD . /root/pharos
 RUN /root/pharos/scripts/build.bash $RECLAIM && \
   find /usr/local/lib /usr/local/bin | xargs file | grep 'current ar archive' | awk -F':' '{print $1}' | xargs strip
 RUN rm /usr/local/share/pharos/apianalyzer/sig.json
+
+RUN mkdir -p /deps
+RUN ldd /usr/local/bin/apianalyzer | tr -s '[:blank:]' '\n' | grep '^/' | xargs -I % sh -c 'cp % /deps;'
+
+FROM ubuntu:latest as package
+
+COPY --from=builder /deps /deps
+COPY --from=builder /usr/local/bin/apianalyzer /usr/local/bin/apianalyzer
+ENV LD_LIBRARY_PATH=/deps

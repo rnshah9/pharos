@@ -1,0 +1,7 @@
+project: pharos
+target: apianalyzer
+cmds:
+  - cmd: /usr/local/bin/apianalyzer /usr/bin/echo
+    env:
+      DISABLE_SMOKETEST: '1'
+    filepath: /usr/local/share/pharos/apianalyzer/sig.json
